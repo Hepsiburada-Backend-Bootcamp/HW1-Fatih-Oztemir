@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HW1_Fatih_Oztemir.Controllers
 {
-    [Route("api/Person")]
+    [Route("api/v1/Person")]
     [ApiController]
     public class PersonController : ControllerBase
     {
@@ -34,7 +34,7 @@ namespace HW1_Fatih_Oztemir.Controllers
            new Person
            {
                Id=3,
-               Name="Tuncay ",
+               Name="Tuncay",
                Surname="Şanlı",
                DepartmentId=1,
                BirthDate=DateTime.Now.AddYears(-45)
@@ -50,7 +50,7 @@ namespace HW1_Fatih_Oztemir.Controllers
            new Person
            {
                Id=5,
-               Name="Volkan ",
+               Name="Volkan",
                Surname="Demirel",
                DepartmentId=1,
                BirthDate=DateTime.Now.AddYears(-40)
@@ -103,7 +103,7 @@ namespace HW1_Fatih_Oztemir.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute]int id)
+        public IActionResult Delete([FromRoute] int id)
         {
             var findResult = Persons.Find(p => p.Id == id);
             if (findResult == null)
@@ -120,8 +120,15 @@ namespace HW1_Fatih_Oztemir.Controllers
                 return Ok(GetDynamicOperation(p => p.Name == name));
             return BadRequest();
         }
+        [HttpGet("SortByName")]
+        public IActionResult SortByName()
+        {
+            return Ok(Persons.OrderBy(p => p.Name));
+        }
+
+
         //method
-        private List<Person> GetDynamicOperation(Func<Person, bool> filter) 
+        private List<Person> GetDynamicOperation(Func<Person, bool> filter)
         {
             return Persons.Where(filter).ToList();
         }
